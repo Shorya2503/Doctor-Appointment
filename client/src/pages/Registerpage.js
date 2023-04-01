@@ -1,6 +1,7 @@
 import React from 'react';
 import {Form} from 'antd';
 import "../styles/RegisterStyle.css";
+import {Link} from "react-router-dom";
 
 const register = () => {
   //form handler
@@ -13,7 +14,7 @@ const register = () => {
       <Form layout="vertical" onFinish={onFinishHandler}
        className="register-form">
 
-      <h3>Register Form</h3>
+      <h3 className='text-centre '>Register Form</h3>
 
         <Form.Item label="Name" name="name">
           <input type='text' required className='input-form'/>
@@ -27,6 +28,9 @@ const register = () => {
           <input type='password' required className='input-form'/>
         </Form.Item>
 
+         <Link to="/login" className="m-2">
+         Already registered? Login here.
+         </Link>
         <button className="btn btn-primary" type='submit'>Register</button>
       </Form>
       </div>
