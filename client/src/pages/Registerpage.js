@@ -6,7 +6,7 @@ import axios from 'axios'
 
 const Register = () => {
   //form handler 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate(); // to navigate to other pages when work of one finished
   const onFinishHandler = async(values)=>{
     try {
       const res = await axios.post("/api/v1/user/register",values);  
