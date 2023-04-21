@@ -1,15 +1,22 @@
 import React from 'react';
 import {Form , message} from 'antd';
 import "../styles/RegisterStyle.css";
+import { useDispatch } from 'react-redux';
+import { showLoading,hideLoading } from '../redux/features/alertSlice';
 import {Link, useNavigate} from "react-router-dom"; 
 import axios from 'axios'
 
 const Register = () => {
   //form handler 
   const navigate = useNavigate(); // to navigate to other pages when work of one finished
+  const dispatch = useDispatch();
+
   const onFinishHandler = async(values)=>{
     try {
-      const res = await axios.post("/api/v1/user/register",values);  
+      dispatch(showLoading());
+      const res = await axios.post("/api/v1/user/register",values);
+      dispatch(hideLoading());
+
       if(res.data.success){
         message.success("Register Successfully!")
         navigate("/login")
@@ -18,6 +25,7 @@ const Register = () => {
         message.error(res.data.message); 
       }
     } catch (error) {
+      dispatch(hideLoading());
       console.log(error); 
       message.error('Something went wrong')
     }
