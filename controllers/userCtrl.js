@@ -55,7 +55,8 @@ const loginController = async (req, res) => {
 //auth controller
 const authController = async(req,res)=>{
   try {
-    const user= await userModel.findOne({_id:req.body.userId})
+    const user= await userModel.findById({ _id:req.body.userId}) 
+    user.password = undefined ; 
     if(!user){
       return res.status(200).send({
         message:"user not found",
@@ -64,14 +65,11 @@ const authController = async(req,res)=>{
     }else{
       res.status(200).send({
         success:true,
-        data: {
-          name: user.name,
-          email: user.email,
-        },
+        data: user
       });
     }
   } catch (error) {
-    console.log(eror)
+    console.log(error)
     res.status(500).send({
       message:'auth error',
       success:false,
