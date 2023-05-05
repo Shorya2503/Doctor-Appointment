@@ -2,7 +2,7 @@ import React, { children } from 'react'
 import {Link , useLocation , useNavigate} from 'react-router-dom'
 import '../styles/LayoutStyles.css' 
 import { adminMenu, userMenu } from '../Data/data'; 
-import {message} from 'antd'
+import {message,Badge} from 'antd'
 import { useSelector } from 'react-redux';
 const Layout = ({children}) => {  
     const {user} = useSelector(state => state.user)
@@ -31,7 +31,7 @@ const Layout = ({children}) => {
                 const isActive = location.pathname === menu.path
                 return( 
                     <>
-                        <div className={`menu-items ${isActive && "active"}`}> 
+                        <div className={`menu-items ${isActive && "active"}`}>  
                             <i className={menu.icon}></i> 
                             <Link to = {menu.path}>{menu.name}</Link>
                         </div> 
@@ -47,7 +47,9 @@ const Layout = ({children}) => {
            <div className="content"> 
              <div className="header"> 
                 <div className="header-content">
-                    <i class="fa-solid fa-bell"></i> 
+                <Badge count={user && user.notification.length}>
+                <i class="fa-solid fa-bell"></i> 
+                </Badge>
                     <Link to = "/profile">{user?.name}</Link>
                 </div>  
              </div>
