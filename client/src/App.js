@@ -72,7 +72,7 @@ function App() {
             </PublicRoutes>
           }
         /> 
-        <Route path="/doctor/profile"
+        <Route path="/doctor/profile/:id"
            element={
             <ProtectedRoutes>
              <Profile />
