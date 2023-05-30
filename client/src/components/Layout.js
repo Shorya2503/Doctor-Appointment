@@ -32,11 +32,11 @@ const Layout = ({children}) => {
     }, 
     {
         name:"Profile", 
-        path:'/doctor/profile', 
+        path:`/doctor/profile/${user?._id}`, 
         icon:"fa-solid fa-user"
     },
 
-]; 
+];  
     const SidebarMenu = user?.isAdmin ? adminMenu : user?.isDoctor ? doctorMenu : userMenu; 
   return ( 
     <>

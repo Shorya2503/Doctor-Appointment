@@ -1,39 +1,47 @@
 import React from "react";
 import Layout from "./../components/Layout";
 import { Col, Form, Input, Row, TimePicker, message } from "antd";
-import {useSelector,useDispatch} from "react-redux";
-import {useNavigate} from "react-router-dom";
-import {showLoading,hideLoading} from "../redux/features/alertSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { showLoading, hideLoading } from "../redux/features/alertSlice";
 import axios from "axios";
-
+import moment from "moment";
 const ApplyDoctor = () => {
-  const {user} = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   //handle form
-  const handleFinish = async(values) => {
-    console.log(values);
+  const handleFinish = async (values) => {
     try {
       dispatch(showLoading());
-      const res = await axios.post("/api/v1/user/apply-doctor", {...values, userId:user._id},{
-        headers:{
-          Authorization : "Bearer " + localStorage.getItem("token"),
+      const res = await axios.post(
+        "/api/v1/user/apply-doctor",
+        {
+          ...values,
+          userId: user._id,
+          timings: [
+            moment(values.timings[0]).format("HH:mm"),
+            moment(values.timings[1]).format("HH:mm"),
+          ],
         },
-      });
-      console.log("abdjkf");
-      dispatch(hideLoading())
-      if(res.data.success){
-        message.success(res.data.success);
-        navigate('/');  
-      }else{
-        message.error(res.data.error);
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      dispatch(hideLoading());
+      if (res.data.success) {
+        message.success(res.data.message);
+        navigate("/");
+      } else {
+        message.error(res.data.message);
       }
     } catch (error) {
       dispatch(hideLoading());
       console.log(error);
-      message.error("Something went wrong");
+      message.error("Somthing Went Wrrong ");
     }
   };
   return (
@@ -46,55 +54,55 @@ const ApplyDoctor = () => {
             <Form.Item
               label="First Name"
               name="firstName"
-              
-              
+              required
+              rules={[{ required: true }]}
             >
-              <Input type="text" placeholder="Your First Name" />
+              <Input type="text" placeholder="your first name" />
             </Form.Item>
           </Col>
           <Col xs={24} md={24} lg={8}>
             <Form.Item
               label="Last Name"
               name="lastName"
-              
-              
+              required
+              rules={[{ required: true }]}
             >
-              <Input type="text" placeholder="Your Last Name" />
+              <Input type="text" placeholder="your last name" />
             </Form.Item>
           </Col>
           <Col xs={24} md={24} lg={8}>
             <Form.Item
               label="Phone No"
               name="phone"
-              
-              
+              required
+              rules={[{ required: true }]}
             >
-              <Input type="text" placeholder="Your Contact No." />
+              <Input type="text" placeholder="your contact no" />
             </Form.Item>
           </Col>
           <Col xs={24} md={24} lg={8}>
             <Form.Item
               label="Email"
               name="email"
-              
-              
+              required
+              rules={[{ required: true }]}
             >
-              <Input type="email" placeholder="Your Email Address" />
+              <Input type="email" placeholder="your email address" />
             </Form.Item>
           </Col>
           <Col xs={24} md={24} lg={8}>
             <Form.Item label="Website" name="website">
-              <Input type="text" placeholder="Your Website" />
+              <Input type="text" placeholder="your website" />
             </Form.Item>
           </Col>
           <Col xs={24} md={24} lg={8}>
             <Form.Item
               label="Address"
               name="address"
-              
-              
+              required
+              rules={[{ required: true }]}
             >
-              <Input type="text" placeholder="Your Clinic Address" />
+              <Input type="text" placeholder="your clinic address" />
             </Form.Item>
           </Col>
         </Row>
@@ -104,34 +112,34 @@ const ApplyDoctor = () => {
             <Form.Item
               label="Specialization"
               name="specialization"
-              
-              
+              required
+              rules={[{ required: true }]}
             >
-              <Input type="text" placeholder="Your Specialization" />
+              <Input type="text" placeholder="your specialization" />
             </Form.Item>
           </Col>
           <Col xs={24} md={24} lg={8}>
             <Form.Item
               label="Experience"
               name="experience"
-              
-              
+              required
+              rules={[{ required: true }]}
             >
-              <Input type="text" placeholder="Your Experience" />
+              <Input type="text" placeholder="your experience" />
             </Form.Item>
           </Col>
           <Col xs={24} md={24} lg={8}>
             <Form.Item
               label="Fees Per Cunsaltation"
               name="feesPerCunsaltation"
-              
-              
+              required
+              rules={[{ required: true }]}
             >
-              <Input type="text" placeholder="your fee" />
+              <Input type="text" placeholder="your contact no" />
             </Form.Item>
           </Col>
           <Col xs={24} md={24} lg={8}>
-            <Form.Item label="Timings" name="timings" >
+            <Form.Item label="Timings" name="timings" required>
               <TimePicker.RangePicker format="HH:mm" />
             </Form.Item>
           </Col>
