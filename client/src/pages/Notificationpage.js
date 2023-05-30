@@ -73,7 +73,7 @@ const NotificationPage = () => {
               Mark All Read
             </h4>
           </div>
-          {/* {user?.notification.map((notificationMgs) => (
+          {user?.notification.map((notificationMgs) => (
             <div className="card" style={{ cursor: "pointer" }}>
               <div
                 className="card-text"
@@ -82,7 +82,7 @@ const NotificationPage = () => {
                 {notificationMgs.message}
               </div>
             </div>
-          ))} */}
+          ))}
         </Tabs.TabPane>
         <Tabs.TabPane tab="Read" key={1}>
           <div className="d-flex justify-content-end">
@@ -94,7 +94,7 @@ const NotificationPage = () => {
               Delete All Read
             </h4>
           </div>
-          {/* {user?.seennotification.map((notificationMgs) => (
+          {user?.seennotification.map((notificationMgs) => (
             <div className="card" style={{ cursor: "pointer" }}>
               <div
                 className="card-text"
@@ -103,7 +103,7 @@ const NotificationPage = () => {
                 {notificationMgs.message}
               </div>
             </div>
-          ))} */}
+          ))}
         </Tabs.TabPane>
       </Tabs>
     </Layout>

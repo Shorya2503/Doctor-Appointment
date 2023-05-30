@@ -17,7 +17,8 @@ const connectDB = require('./config/db');
 
  //routes
  app.use("/api/v1/user" , require("./routes/userRoutes"));
-
+ app.use("/api/v1/admin" , require("./routes/adminRoutes")); 
+ app.use("/api/v1/doctor" , require("./routes/doctorRoutes"));
  const port= 8080;
   
 //listen port
