@@ -243,6 +243,23 @@ if(appointments.length>0){
   }
 };
 
+const userAppointmentsController = async(req,res) =>{
+  try {
+    const appointments = await appointmentModel.find({userId:req.body.userId});
+    res.status(200).send({
+      success:true,
+      message:'Users Appointments fetch successfully',
+      data:appointments,
+    })
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({
+      success: false,
+      message:"error in fetching",
+    })
+  }
+};
+
 module.exports = { loginController,
    registerController, 
    authController,
@@ -251,5 +268,6 @@ module.exports = { loginController,
    deleteAllNotificationController ,
    getAllDoctorsController ,
   bookAppointmentController,
-  bookingAvailabilityController
+  bookingAvailabilityController,
+  userAppointmentsController
 };
