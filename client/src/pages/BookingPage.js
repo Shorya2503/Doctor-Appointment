@@ -8,9 +8,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { showLoading, hideLoading } from "../redux/features/alertSlice";
 
 const BookingPage = () => {    
-    const {user} = useSelector(state => state.user)
-    const [date , setDate] = useState([]) 
-    const [time,setTime] = useState([]) 
+    const {user} = useSelector(state => state.user);
+    const [date , setDate] = useState(""); 
+    const [time,setTime] = useState(); 
     const params = useParams(); 
     const [doctors,setDoctors] = useState([]);  
     const dispatch = useDispatch(); 
@@ -29,35 +29,68 @@ const BookingPage = () => {
         console.log(error)
       }
     }
-  // Booking hqndle 
-  const handleBooking = async () => {
+ 
+  const handleAvailability = async(req,res) =>{
     try {
       dispatch(showLoading());
-      const res = await axios.post(
-        "/api/v1/user/book-appointment",
-        {
-          doctorId: params.doctorId,
-          userId: user._id,
-          doctorInfo: doctors,
-          userInfo: user,
-          date: date,
-          time: time,
+
+      const res = await axios.post('/api/v1/user/booking-availability',
+      {doctorId: params.doctorId, date, time},
+      {
+        headers:{
+          Authorization: `Bearer ${localStorage.getItem('token')}`
         },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          }
-        }
+      }
       );
       dispatch(hideLoading());
-      if (res.data.success) {
+      if(res.data.success){
+        setIsAvailable(true);
+        console.log(isAvailable);
         message.success(res.data.message);
+      }else{
+        message.error(res.data.message);
       }
     } catch (error) {
       dispatch(hideLoading());
       console.log(error);
     }
-  };
+  }
+
+ // Booking hqndle 
+ const handleBooking = async () => {
+  try {
+    setIsAvailable(true);
+    if(!date && !time){
+      return alert("Date and Time Required");
+    }
+    dispatch(showLoading());
+    const res = await axios.post(
+      "/api/v1/user/book-appointment",
+      {
+        doctorId: params.doctorId,
+        userId: user._id,
+        doctorInfo: doctors,
+        userInfo: user,
+        date: date,
+        time: time,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
+      }
+    );
+    dispatch(hideLoading());
+    if (res.data.success) {
+      message.success(res.data.message);
+    }
+  } catch (error) {
+    dispatch(hideLoading());
+    console.log(error);
+  }
+};
+
+
     useEffect(()=> {
       getUserData()
     },[])
@@ -81,6 +114,7 @@ const BookingPage = () => {
                 className="m-2"
                 format="DD-MM-YYYY"
                 onChange={(value) => {
+                  setIsAvailable(false);
                   setDate(moment(value).format("DD-MM-YYYY"));
                 }}
               />
@@ -89,17 +123,20 @@ const BookingPage = () => {
                 format="HH:mm"
                 className="mt-3"
                 onChange={(value) => {
+                  setIsAvailable(false);
                   setTime(moment(value).format("HH:mm"));
                 }}
               />
 
               <button
-                className="btn btn-primary mt-2">
+                className="btn btn-primary mt-2" onClick={handleAvailability}>
                 Check Availability
               </button>
-              <button className="btn btn-dark mt-2" onClick = {handleBooking}>
+              { !isAvailable && (
+                <button className="btn btn-dark mt-2" onClick = {handleBooking}>
                 Book Now
               </button>
+              )}
             </div>
           </div>
         )}
